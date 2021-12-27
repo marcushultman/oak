@@ -43,7 +43,13 @@ export class BufReader {
 
     // Read new data: try a limited number of times.
     for (let i = MAX_CONSECUTIVE_EMPTY_READS; i > 0; i--) {
-      const rr = await this.#reader.read(this.#buffer.subarray(this.#posWrite));
+      let rr: number | null = null;
+      try {
+        rr = await this.#reader.read(this.#buffer.subarray(this.#posWrite));
+      } catch (err: unknown) {
+        console.log('printf debugging', { err });
+        throw err;
+      }
       if (rr === null) {
         this.#eof = true;
         return;
