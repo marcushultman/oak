@@ -47,7 +47,11 @@ export class BufReader {
       try {
         rr = await this.#reader.read(this.#buffer.subarray(this.#posWrite));
       } catch (err: unknown) {
-        console.log('printf debugging', { err });
+        console.log('printf debugging', {
+          err,
+          '#buffer.length': this.#buffer.length,
+          '#posWrite': this.#posWrite,
+        });
         throw err;
       }
       if (rr === null) {
